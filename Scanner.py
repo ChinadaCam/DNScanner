@@ -16,6 +16,8 @@ import dns.resolver
 
 update_tld_names()
 Scanner=""
+#click.echo(click.style(("    {}".format(code)),fg='green', bold=True))
+
 
 class DNScanner:
     def __init__(self, url):
@@ -30,8 +32,9 @@ class DNScanner:
             if not os.path.exists(directory):
                 os.makedirs(directory)
         except Exception as e:
-            print("Error: "+ e+"\n")
-            print("Can´t create directories!")
+            click.echo(click.style((" Error: {}\n ".format(e)), fg='red', bold=True))
+            click.echo(click.style(("Can´t create directories! {}".format(e)), fg='green', bold=True))
+
             directory.dirList()
         else:
             print("Can´t create directories")
@@ -63,28 +66,37 @@ class DNScanner:
                 click.echo(click.style(("\nSite  Found! Code {}".format(code)),fg='green', bold=True))
 
                 self.url = url
-                self.getDomainName()
-                self.getInfo()
 
+                self.getDomainName()
 
             else:
                 click.echo(click.style(("\nSite  Found! Code {}".format(code)),fg='red', bold=True))
         except Exception as e:
             print("Error: {}".format(e))
-            click.echo(click.style(("\nSite  Found! Code {}".format(code)), fg='red', bold=True))
+            click.echo(click.style(("\nSite {}  Found! Code {} ".format(e,code)), fg='red', bold=True))
 
     def getDomainName(self):
         url =  self.url
         domain = self.domain
+        print("Domain: " + domain)
+        try:
+            self.getInfo()
+        except Exception as e:
+            click.echo(click.style(("\nError: {}".format(e)), fg='red', bold=True))
+
         print("\nURL " + url)
-        print("Domain:" + domain)
+
 
     def getInfo(self):
 
-        result =dns.resolver.resolve(self.domain, 'A')
-        for ipval in result:
-            print('IP', ipval.to_text())
+        try:
+            result = dns.resolver.resolve(self.domain, 'A')
+            for ipval in result:
+                click.echo(click.style(("\nIP {}".format(ipval)), fg='blue', bold=True))
 
+
+        except Exception as e:
+            click.echo(click.style(("\Cant resolve IP! Code {}".format(e)), fg='red', bold=True))
 
 
 
