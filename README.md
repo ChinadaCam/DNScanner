@@ -4,6 +4,7 @@
  
  
 ##How to use
+
 python3 DNScanner.py -d example.com -mx=True -o a
 
 
