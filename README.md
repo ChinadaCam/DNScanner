@@ -1,6 +1,6 @@
 # DNScanner
- <h1 align="center"> DNScanner 👋</h1>
-<h2 align="center"  > Bash Scripts to automate services </h2>
+ <h1 align="center"> DNScanner </h1>
+<h2 align="center"  > Automate the Scans </h2>
 
 <!-- PROJECT SHIELDS -->
 <!--
