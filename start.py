@@ -1,9 +1,7 @@
 import argparse
-import time
-from Scanner import DNScanner
-from click import secho, pause
+from click import secho
 import sys
-
+from DNScanner import DNScanner
 
 savesys = sys.stdout
 
