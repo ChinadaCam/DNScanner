@@ -5,5 +5,4 @@ setup(name='DNScanner',
       author='Tiago Faustino',
       author_email='tiagfaustino@gmail.com',
       url='https://github.com/ChinadaCam/DNScanner/',
-      packages=['Scanner.*']
      )

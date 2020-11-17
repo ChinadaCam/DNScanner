@@ -1,30 +1,31 @@
 #!/usr/bin/python3
 import click
 import os
-import tld
 import requests as r
 from tld.utils import update_tld_names
 import dns.resolver
 from datetime import datetime
 import time
 import sys
+#import netaddr
 
 '''
 Domain Scanner
 
 
-Created by Faustino
+Created by Tiago Faustino
+2020 @
 '''
 
 update_tld_names()
 METHODS = (
     "create_dir","dirList", " urlStatus","getDomainName",
-    "getInfo", "getMX", "getCN","output"
+    "getInfo","checkSubdomain", "getMX", "getCN","output"
 )
 
 path=''
 Scanner=""
-
+stsave = sys.stdout
 
 class DNScanner:
 
@@ -32,12 +33,14 @@ class DNScanner:
 
     def __init__(self, url):
         self.url = url
-        self.domain = tld.get_fld(str(url))
+        self.domain = str(url)
         self.mxlist = []
         self.CurrentDate = datetime.today().strftime("%d-%b-%Y_%H-%M-%S") #for files
         self.formatedDate = datetime.today().strftime("%d/%b/%Y %H:%M:%S") #for logs
         self.savesys = sys.stdout
-        self.path = ''
+        self.outputpath = ''
+        self.subdomainspath = ''
+        self.subdomainbool = False
 
 
     def start(self):
@@ -45,18 +48,30 @@ class DNScanner:
             Starts the program
             '''
 
+        self.dirList('Others')
 
         click.secho("#-----Initial Process -----#",color="blue")
         click.secho("Process started at {}".format(self.formatedDate))
 
         # print(len(METHODS))
-        with click.progressbar(length=len(METHODS)) as bar:
+        #Loading bar
 
-            for items in METHODS:
-                bar.update(1)
-                time.sleep(0.4)
-            self.urlStatus()
-            self.getDomainName()
+        #with click.progressbar(length=len(METHODS)) as bar:
+
+         #   for items in METHODS:
+          #      bar.update(1)
+           #     time.sleep(0.4)
+
+
+        if self.subdomainbool:
+
+                self.urlStatus()
+                self.getDomainName()
+                self.getSubdomains(self.subdomainspath)
+                return
+
+        self.urlStatus()
+        self.getDomainName()
 
         #time.sleep(1)
 
@@ -81,7 +96,7 @@ class DNScanner:
         except Exception as e:
             click.echo(click.style(("[!]  Error: {}\n ".format(e)), fg='red', bold=True))
             click.echo(click.style(("[!]  Can´t create directories! They need to be created to save your results! \n Error:{}".format(e)), fg='yellow', bold=True))
-            directory.dirList()
+
 
 
     def dirList(self,add):
@@ -90,7 +105,7 @@ class DNScanner:
             '''
         
         #Predefine your dirs here
-        self.list = ['Discovers']
+        self.list = ['Others','Others/Discovers','Others/wordlists']
         
         self.add = add
         
@@ -113,7 +128,7 @@ class DNScanner:
 
 
         url = self.url
-        url = "https://www." + url
+        url = "http://www."+url
         code= ""
         try:
             code = r.get(url).status_code
@@ -127,14 +142,14 @@ class DNScanner:
 
     def getDomainName(self):
         '''
-              This method gets the domain and url
+              This method gets the domain and url, then runs getInfo()
               '''
 
         try:
             url = self.url
             domain = self.domain
-            print("\nURL " + url)
-            print("Domain=  {} | {} ".format(self.domain))
+            print("\nURL= "+ url)
+            print("Domain= {} ".format(self.domain))
             self.getInfo()
         except Exception as e:
             click.echo(click.style(("\nError: {}".format(e)), fg='red', bold=True))
@@ -145,9 +160,16 @@ class DNScanner:
               '''
 
         try:
-            result = dns.resolver.resolve(self.domain, 'A')
-            for ipval in result:
-                click.echo(click.style(("IP {}".format(ipval)), fg='blue', bold=True))
+            result4 = dns.resolver.resolve(self.domain, 'A')
+            result6 = dns.resolver.resolve(self.domain, 'AAAA')
+            i = 0
+            for ipval in result4:
+                i+=1
+                click.echo(click.style(("({}) IPV4 {}".format(i,ipval)), fg='blue', bold=True))
+
+            for ipval in result6:
+                i += 1
+                click.echo(click.style(("({}) IPV6 {}".format(i, ipval)), fg='blue', bold=True))
 
 
         except Exception as e:
@@ -162,7 +184,7 @@ class DNScanner:
         mxlist = []
         try:
             result = dns.resolver.resolve(self.domain, 'MX')
-            click.echo(click.style("\n#-----MX RECORDS PROCESS-----#"))
+            click.echo(click.style("\n#------- MX RECORDS  -------#"))
             click.secho("Process started at {}".format(self.formatedDate))
 
             #get data from result
@@ -187,6 +209,36 @@ class DNScanner:
                 print(' cname target address:', cnameval.name)
         except Exception as e:
             click.secho("\Cant resolve CN Records! Error: {}".format(e), fg='red', bold=True)
+
+    def getSubdomains(self, path):
+        '''
+                  Check for subdomains
+                   '''
+        click.secho("\n #------- SUBDOMAINS -------#\n")
+
+        self.subdomainspath = path
+        file = open(path, 'r')
+        content = file.read()
+        subdomains = content.splitlines()
+        try:
+            print("Discovered Domains:")
+            for subdomain in subdomains:
+                url = f'http://{subdomain}.{self.domain}'
+                try:
+                    r.get(url)
+                except r.ConnectionError:
+                    pass
+                except KeyboardInterrupt as e:
+                    sys.stdout = stsave
+                    print('KeyboardInterrupt')
+                    sys.exit(0)
+
+                else:
+                    print("\t",url)
+        except KeyboardInterrupt as e:
+            sys.stdout = stsave
+            print('KeyboardInterrupt')
+            sys.exit(0)
     # endregion
 
     def output(self,path):
@@ -194,17 +246,24 @@ class DNScanner:
             Save outputs to a file with the current date and time
             '''
 
-        #check if path is created
-        self.dirList(path)
+        try:
+            #check if path is created
+            self.dirList(path)
 
-        time.sleep(0.2)
-        click.secho("\n [*] Outputting to {}, just wait a bit".format(self.path), fg='yellow')
+            time.sleep(0.2)
+            click.secho("\n [*] Outputting to {}, just wait a bit".format(self.outputpath), fg='yellow')
 
-        saveName = 'DNScanner-' + str(self.CurrentDate) + '.txt'
-        open(r'{}/'.format(path) + str(saveName) + '.txt', "w")
-        self.path = path
+            saveName = 'DNScanner-' + str(self.CurrentDate) + '.txt'
+            open(r'{}/'.format(path) + str(saveName) + '.txt', "w")
+            self.outputpath = path
 
-        sys.stdout = open(r'{}/'.format(path) + str(saveName) + '.txt', "a")
+            sys.stdout = open(r'{}/'.format(path) + str(saveName) + '.txt', "a")
+        except KeyboardInterrupt as e:
+            sys.stdout = stsave
+            print('KeyboardInterrupt')
+            sys.exit(0)
+
+
 
 
 
