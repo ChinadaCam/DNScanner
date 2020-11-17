@@ -36,7 +36,13 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Automate your DNS search.
+Automate your DNS search!
+
+At this moment this is the list of things that you can do:
+ * Get IPv4 and IPv6
+ * Get MX Records
+ * Brute force subdomains
+ * Output in txt. (Later PDF report will be added=
 
 
 
@@ -70,7 +76,8 @@ python3 DNScanner.py -d example.com
 ### Usage Examples
 
    1. Simple Usage | ``` py  py DNScanner.py -d example.com ```
-   2. Define a directory to output | ```py py DNScanner.py -d example.com -D NameOfDirectory```
+   2. Define a directory to output | ```py py DNScanner.py -d example.com -O -D=NameOfDirectory```
+   3. Get subdomains | ```py py DNScanner.py -d example.com -cS```
 
 <!-- Suggestions and Issues -->
 ## Roadmap
