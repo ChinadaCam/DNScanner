@@ -89,7 +89,7 @@ python3 DNScanner.py -d example.com
    ```
    3. Get subdomains | 
    ```py 
-   python3 Scanner.py -d example.com -cS
+   python3 DNScanner.py -d example.com -cS
    ```
 
 <!-- Suggestions and Issues -->
