@@ -58,12 +58,9 @@ The project is under construction, if something wrong happens please report it t
 
 ### Prerequisites
 
+Python3
 
-Install requirements
 
-```sh
-python3 pip install requirements.txt
-```
 
 ### Installation
 
@@ -71,8 +68,12 @@ python3 pip install requirements.txt
 ```sh
 git clone https://github.com/ChinadaCam/DNScanner.git
 ```
+2, Install requirements
 
-2. Run it
+```sh
+python3 pip install requirements.txt
+```
+3. Run it
 ```sh
 python3 DNScanner.py -d example.com
 ```
