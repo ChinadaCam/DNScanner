@@ -14,7 +14,7 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/H2H27JW0K)
+
 
 
 
@@ -120,8 +120,9 @@ Distributed under the GPL-3.0 License . See `LICENSE` for more information.
 
 Tiago Faustino - tiagfaustino@gmail.com
 Discord: fลuร†เиѳ#7797
-
+ 
 Project Link: [https://github.com/ChinadaCam/DNScanner](https://github.com/ChinadaCam/DNScanner)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/H2H27JW0K)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
