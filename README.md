@@ -71,7 +71,7 @@ git clone https://github.com/ChinadaCam/DNScanner.git
 2, Install requirements
 
 ```sh
-python3 pip install requirements.txt
+python3 pip install -r requirements.txt
 ```
 3. Run it
 ```sh
