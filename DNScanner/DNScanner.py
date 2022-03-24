@@ -105,7 +105,7 @@ class DNScanner:
             '''
         
         #Predefine your dirs here
-        self.list = ['Others','Others/Discovers','Others/wordlists']
+        self.list = ['DNScanner/Others','DNScanner/Others/Discovers','DNScanner/Others/wordlists']
         
         self.add = add
         
@@ -216,7 +216,7 @@ class DNScanner:
                    '''
         click.secho("\n #------- SUBDOMAINS -------#\n")
 
-        self.subdomainspath = path
+        self.subdomainspath = 'DNScanner\Others\wordlist'
         file = open(path, 'r')
         content = file.read()
         subdomains = content.splitlines()
@@ -265,7 +265,9 @@ class DNScanner:
 
 
 
+#region API's
 
+    
 
 
 if __name__ == '__main__':

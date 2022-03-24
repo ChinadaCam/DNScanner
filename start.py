@@ -1,7 +1,7 @@
 import argparse
-from click import secho
+#from click import secho
 import sys
-from DNScanner import DNScanner
+from DNScanner.DNScanner import DNScanner
 
 savesys = sys.stdout
 
@@ -13,16 +13,16 @@ parser.add_argument('-O', '--Output', const='Others\Discovers',nargs='?', help='
 parser.add_argument('-D', '--Directory', const='Others\Discovers',nargs='?', help='Define a directory to output.\n Default is Discovers')
 parser.add_argument('-mx', '--mxrecords', nargs='?', const='True' ,help='Show Mail Exanger Records (MX RECORDS)')
 parser.add_argument('-A', '--all', nargs='?', const='True' ,help='Run all parameters (output not included)')
-#parser.add_argument('-cn', '--cname', nargs='?', const='True' ,help='Show Canonical Name Records(CN Records)')
+parser.add_argument('-cn', '--cname', nargs='?', const='True' ,help='Show Canonical Name Records(CN Records)')
 args = parser.parse_args()
 
 
 def main():
-    secho('------------------------------------------------')
-    secho('\t DNScanner '
+    print('------------------------------------------------')
+    print('\t DNScanner '
           '\n\tMade by Faustino'
-          '\n  Project link: https://github.com/ChinadaCam/DNScanner ', fg='bright_white')
-    secho('------------------------------------------------\n')
+          '\n  Project link: https://github.com/ChinadaCam/DNScanner ' )
+    print('------------------------------------------------\n')
     Scanner = DNScanner(args.domain)
 
 
@@ -31,7 +31,7 @@ def main():
 
     if args.all:
         args.mxrecords = True
-        Scanner.subdomainspath = 'Others\wordlists\subdomainlist.txt'
+        Scanner.subdomainspath = 'DNScanner\Others\wordlists\subdomainlist.txt'
         Scanner.subdomainbool = True
 
         # check if output is used
@@ -60,8 +60,8 @@ def main():
        #Scanner.getCN()
 
     sys.stdout = savesys
-    secho("\n[+] Finished ", fg="green")
-
+    #secho("\n[+] Finished ", fg="green")
+    print("\n[+] Finished ")
 
 
 

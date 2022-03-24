@@ -3,7 +3,7 @@ from setuptools import setup
 
 
 setup(name='DNScanner',
-      version='0.1.6',
+      version='0.1.7',
       description='Python Script to automate DNS scans',
       author='Tiago Faustino',
       author_email='tiagfaustino@gmail.com',
