@@ -1,6 +1,6 @@
 # DNScanner
  <h1 align="center"> DNScanner </h1>
-<h2 align="center"  > Automate the Scans </h2>
+<h2 align="center"  > Easiest way to scan domains via cli </h2>
 
 <!-- PROJECT SHIELDS -->
 <!--
@@ -24,7 +24,7 @@
 
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
-  * [Installation](#Installation)
+  * [Installation](#installation)
   * [Usage Examples](#usage-examples)
 * [Roadmap](#roadmap)
 * [License](#license)
@@ -41,14 +41,18 @@ Automate your DNS search like a pro!!
 I started making this project as way to learn DNS scanning.
 
 At this moment this is the list of things that you can do:
- * Get IPv4 and IPv6
- * Get MX Records
- * Brute force subdomains
- * Output in txt. (Later PDF report will be added=
+ * Get IPv4 and IPv6.
+ * Get MX/NS/CN Records.
+ * Whois.
+ * Subdomains discovery.
+ * Output to text file.
+ * URL Status
+ * ICMP Checker
 
 It will be added:
  * Report to pdf
  * Get wildcard
+ * Geolocation
 
 
 <!-- GETTING STARTED -->
@@ -58,7 +62,7 @@ The project is under construction, if something wrong happens please report it t
 
 ### Prerequisites
 
-Python3
+Python3 & pip
 
 
 
@@ -75,23 +79,34 @@ python3 pip install -r requirements.txt
 ```
 3. Run it
 ```sh
-python3 DNScanner.py -d example.com
+python3 start.py -d example.com
 ```
 
 ### Usage Examples
 
    1. Simple Usage | 
    ``` py  
-   python3  DNScanner.py -d example.com 
+   python3  start.py -d example.com 
 ```
    2. Define a directory to output |
    ```py 
-    python3  DNScanner.py -d example.com -O -D=NameOfDirectory
+    python3  start.py -d example.com -O -D=NameOfDirectory
    ```
    3. Get subdomains | 
    ```py 
-   python3 DNScanner.py -d example.com -cS
+   python3 start.py -d example.com -cS
    ```
+
+
+Output for the following command:
+  ``` py  
+  python3 start.py -d google.com -ns -mx -W 
+  ```
+ 
+
+![Screenshot_1](https://user-images.githubusercontent.com/20567276/161407610-83a9ca58-08a7-4799-a4bc-b470d0899b1e.png)
+
+
 
 <!-- Suggestions and Issues -->
 ## Roadmap
