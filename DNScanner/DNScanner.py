@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+from logging import exception
+import socket
 import click
 import os
 import requests as r
@@ -7,41 +9,56 @@ import dns.resolver
 from datetime import datetime
 import time
 import sys
+import unittest
+from ipwhois import IPWhois
+import json
+
 #import netaddr
 
-'''
-Domain Scanner
+# Domain Scanner
+# Copyright (c) 2020-2022 @ Tiago Faustino
+# All rights reserved.
 
-
-Created by Tiago Faustino
-2020 @
-'''
 
 update_tld_names()
 METHODS = (
     "create_dir","dirList", " urlStatus","getDomainName",
-    "getInfo","checkSubdomain", "getMX", "getCN","output"
+    "getInfo","checkSubdomain", "getMX", "getNS", "getCN","output"
 )
 
 path=''
 Scanner=""
 stsave = sys.stdout
 
+
+with click.progressbar(length=len(METHODS)) as bar:
+
+    for items in METHODS:
+        bar.update(2)
+        time.sleep(0.01)
+
+
 class DNScanner:
 
 
 
     def __init__(self, url):
-        self.url = url
-        self.domain = str(url)
-        self.mxlist = []
-        self.CurrentDate = datetime.today().strftime("%d-%b-%Y_%H-%M-%S") #for files
-        self.formatedDate = datetime.today().strftime("%d/%b/%Y %H:%M:%S") #for logs
-        self.savesys = sys.stdout
-        self.outputpath = ''
-        self.subdomainspath = ''
-        self.subdomainbool = False
+        try:
+            self.url = url
+            self.domain = str(url)
+            self.ip= socket.gethostbyname(self.domain)
+            self.mxlist = []
+            self.CurrentDate = datetime.today().strftime("%d-%b-%Y_%H-%M-%S") #for files
+            self.formatedDate = datetime.today().strftime("%d/%b/%Y %H:%M:%S") #for logs
+            self.savesys = sys.stdout
+            self.outputpath = ''
+            self.subdomainspath = ''
+            self.subdomainbool = False
 
+        except Exception as e:
+            print(e)
+        except socket.error as error:
+            print(error)
 
     def start(self):
         '''
@@ -54,13 +71,8 @@ class DNScanner:
         click.secho("Process started at {}".format(self.formatedDate))
 
         # print(len(METHODS))
-        #Loading bar
+     
 
-        #with click.progressbar(length=len(METHODS)) as bar:
-
-         #   for items in METHODS:
-          #      bar.update(1)
-           #     time.sleep(0.4)
 
 
         if self.subdomainbool:
@@ -123,27 +135,62 @@ class DNScanner:
 
     def urlStatus(self):
         '''
-            This method check if domain is up
+            This method check if url and domain is up
             '''
 
 
         url = self.url
         url = "http://www."+url
         code= ""
+        ip = self.ip
+        #response = os.system("ping  " + ip)
         try:
+            
+
+            #check the ping response
+            response = os.popen(f"ping -c 1 {ip}").read()
+            if "Received = 4" in response:
+                print(f"\nIP: {ip} -  Ping reachable ✅")
+            else:
+                print(f"\nIP: {ip} - Ping not reachable ❌")
+          
             code = r.get(url).status_code
+
             if code == 200:
                 #if up then run all functions
                 click.echo(click.style(("\nSite  Found! Code {}".format(code)),fg='green', bold=True))
                 self.url = url
+            
+              
+
 
         except Exception as e:
-            click.secho("\n\n\The domain doesnt exist! Please insert a valid domain  ",fg='red',bold=True)
+            click.secho(f"\n\n\The domain not found! Please insert a valid domain. \n{e}",fg='red',bold=True)
+    
+    def whoIs(self):
+       
+        click.secho("\n #------- WHOIS-------#\n")
+
+        whois = IPWhois(self.ip)
+        res = whois.lookup_whois() 
+        data = json.dumps(res,sort_keys=True, indent=4) #.loads(res)
+       
+         
+         
+        print(f"{data}")
+        print("\n Dns zone: "+whois.dns_zone)
+        
+    def getGeo(self):
+            'to-do'
+            pass
+
+
 
     def getDomainName(self):
         '''
-              This method gets the domain and url, then runs getInfo()
+              This method check if host is up (domain/url), then runs getInfo()
               '''
+        
 
         try:
             url = self.url
@@ -203,6 +250,7 @@ class DNScanner:
         '''
                  This is method gets CN records from the domain
                  '''
+        click.secho("\n #------- CANONICAL NAMES-------#\n")         
         try:
             result = dns.resolver.resolve(self.domain, 'CNAME')
             for cnameval in result:
@@ -210,6 +258,19 @@ class DNScanner:
         except Exception as e:
             click.secho("\Cant resolve CN Records! Error: {}".format(e), fg='red', bold=True)
 
+    def getNS(self):
+        '''
+             This is method gets nameserver records from the domain
+                 '''
+        click.secho("\n #------- NAMESERVERS -------#\n")
+
+        try:
+            answers = dns.resolver.query(self.domain,'NS')
+            for server in answers:
+                print(f"{server.target}")
+        except Exception as e:
+            click.secho("\Cant resolve NS Records! Error: {}".format(e), fg='red', bold=True)
+    
     def getSubdomains(self, path):
         '''
                   Check for subdomains
@@ -239,7 +300,13 @@ class DNScanner:
             sys.stdout = stsave
             print('KeyboardInterrupt')
             sys.exit(0)
-    # endregion
+    
+
+
+    
+    
+
+# endregion
 
     def output(self,path):
         '''
@@ -267,7 +334,7 @@ class DNScanner:
 
 #region API's
 
-    
+
 
 
 if __name__ == '__main__':
