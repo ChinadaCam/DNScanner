@@ -36,11 +36,15 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Automate your DNS search like a pro!!
+Automate your Domain scan like a pro!!
+This is a tool that started being developed as a module for another OSINT/Pentest tool (Still in development) and  I decided to make it as a solo build too.
+It's still in early development but getting more and more features, you can export the output to a txt file and decide what information you want it to have.
+Do a simple   ```py3
+     start.py -d example.com -A 
+              ``` to get a scan with all the features.
+  
 
-I started making this project as way to learn DNS scanning.
-
-At this moment this is the list of things that you can do:
+Current features:
  * Get IPv4 and IPv6.
  * Get MX/NS/CN Records.
  * Whois.
@@ -49,7 +53,7 @@ At this moment this is the list of things that you can do:
  * URL Status
  * ICMP Checker
 
-It will be added:
+To be added:
  * Report to pdf
  * Get wildcard
  * Geolocation
