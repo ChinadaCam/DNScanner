@@ -1,4 +1,4 @@
-# DNScanner
+
  <h1 align="center"> DNScanner 1.0x </h1>
 <h2 align="center"  > Easiest way to scan domains via cli </h2>
 
