@@ -16,7 +16,7 @@ import json
 #import netaddr
 
 # Domain Scanner
-# Copyright (c) 2020-2022 @ Tiago Faustino
+# Copyright (c) 2020-2023 @ Tiago Faustino
 # All rights reserved.
 
 
@@ -69,9 +69,9 @@ class DNScanner:
 
         click.secho("#-----Initial Process -----#",color="blue")
         click.secho("Process started at {}".format(self.formatedDate))
-
+        self.logger(0,"Process started at {}".format(self.formatedDate))
+        self.urlStatus()
         # print(len(METHODS))
-     
 
 
 
@@ -82,7 +82,7 @@ class DNScanner:
                 self.getSubdomains(self.subdomainspath)
                 return
 
-        self.urlStatus()
+
         self.getDomainName()
 
         #time.sleep(1)
@@ -97,14 +97,14 @@ class DNScanner:
             """
 
         try:
-            click.secho("Checking if {} directory is created.".format(directory), fg='blue', bold=True)
+            #click.secho("Checking if {} directory is created.".format(directory), fg='blue', bold=True)
             if not os.path.exists(directory):
                 os.makedirs(directory)
                 click.secho("Directory {} was created.".format(directory), fg='green', bold=True)
-            else:
-                click.secho("Directory {} already exists.".format(directory), fg="bright_yellow", bold=True)
+            #else:
+                #click.secho("Directory {} already exists.".format(directory), fg="bright_yellow", bold=True)
 
-            print("\n")
+            #print("\n")
         except Exception as e:
             click.echo(click.style(("[!]  Error: {}\n ".format(e)), fg='red', bold=True))
             click.echo(click.style(("[!]  Can´t create directories! They need to be created to save your results! \n Error:{}".format(e)), fg='yellow', bold=True))
@@ -117,7 +117,7 @@ class DNScanner:
             '''
         
         #Predefine your dirs here
-        self.list = ['DNScanner/Others','DNScanner/Others/Discovers','DNScanner/Others/wordlists']
+        self.list = ['DNScanner/Others','DNScanner/Others/Discovers','DNScanner/Others/wordlists','DNScanner/logs/']
         
         self.add = add
         
@@ -174,12 +174,26 @@ class DNScanner:
         whois = IPWhois(self.ip)
         res = whois.lookup_whois() 
         data = json.dumps(res,sort_keys=True, indent=4) #.loads(res)
-       
-         
-         
-        print(f"{data}")
+        rep = json.loads(data)
+
+        for x in rep:
+
+            if x == "nets":
+                for y in rep["nets"]:
+                    print(y)
+        #print(f"Country: {rep['country']}")
+        #print(f"{data}")
         print("\n Dns zone: "+whois.dns_zone)
-        
+
+    def whoIsJson(self):
+        click.secho("\n #------- WHOIS JSON-------#\n")
+
+        whois = IPWhois(self.ip)
+        res = whois.lookup_whois()
+        data = json.dumps(res, sort_keys=True, indent=4)  # .loads(res)
+
+        print(data)
+
     def getGeo(self):
             'to-do'
             pass
@@ -276,7 +290,7 @@ class DNScanner:
                   Check for subdomains
                    '''
         click.secho("\n #------- SUBDOMAINS -------#\n")
-
+        click.secho("Process started at {}".format(self.formatedDate))
         self.subdomainspath = 'DNScanner\Others\wordlist'
         file = open(path, 'r')
         content = file.read()
@@ -292,15 +306,14 @@ class DNScanner:
                 except KeyboardInterrupt as e:
                     sys.stdout = stsave
                     print('KeyboardInterrupt')
-                    sys.exit(0)
-
+                    return "stopped"
                 else:
                     print("\t",url)
         except KeyboardInterrupt as e:
             sys.stdout = stsave
             print('KeyboardInterrupt')
             sys.exit(0)
-    
+            pass
 
 
     
@@ -334,6 +347,13 @@ class DNScanner:
 
 #region API's
 
+    def logger(self,importance,text):
+        '''
+                    logger
+                    '''
+        saveName = 'ScanLog-' + str(self.CurrentDate)
+        f = open('DNScanner/logs/' + str(saveName) + '.txt', "a")
+        f.write(f"{importance} | {text}")
 
 
 

@@ -7,3 +7,4 @@ idna
 requests
 tld
 urllib3
+ipwhois

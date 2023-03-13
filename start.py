@@ -1,5 +1,8 @@
+# Domain Scanner
+# Copyright (c) 2020-2023 @ Tiago Faustino
+# All rights reserved.
 import argparse
-#from click import secho
+from click import secho
 import sys
 from DNScanner.DNScanner import DNScanner
 
@@ -16,7 +19,8 @@ parser.add_argument('-mx', '--mxrecords', nargs='?', const='True' ,help='Show Ma
 parser.add_argument('-ns', '--Nameserver', nargs='?', const='True' ,help='Show Nameserver Records (NS RECORDS)')
 parser.add_argument('-A', '--all', nargs='?', const='True' ,help='Run all parameters (output not included)')
 parser.add_argument('-cn', '--cname', nargs='?', const='True' ,help='Show Canonical Name Records(CN Records)')
-parser.add_argument('-W', '--whois', nargs='?', const='True' ,help='Who is')
+parser.add_argument('-W', '--whois', nargs='?', const='True' ,help='Who is (Clean format)')
+parser.add_argument('-WJ', '--whoisJ', nargs='?', const='True' ,help='Who is (JSON)')
 #parser.add_argument('-geo', '--geolocation', nargs='?', const='True' ,help='Try to get coordinates')
 
 
@@ -26,32 +30,38 @@ args = parser.parse_args()
 def main():
     print('------------------------------------------------')
     print('\t DNScanner '
-          '\n\tMade by Faustino'
+          '\n\tMade by Tiago Faustino'
           '\n  Project link: https://github.com/ChinadaCam/DNScanner ' )
     print('------------------------------------------------\n')
     Scanner = DNScanner(args.domain)
 
 
 
-
-
     if args.all:
-        args.mxrecords = True
+
+        Scanner.getNS()
+        Scanner.whoIsJson()
         Scanner.subdomainspath = 'DNScanner\Others\wordlists\subdomainlist.txt'
         Scanner.subdomainbool = True
-
+        Scanner.getCN()
+        Scanner.getMX()
+        args.mxrecords = True
         # check if output is used
+
+
+
     if args.Output:
         if args.Directory:
             Scanner.output(args.Directory)
         else:
             Scanner.output(args.Output)
-
+    Scanner.start()
+    
     if args.checkSubdomains:
         Scanner.subdomainspath = args.checkSubdomains
         Scanner.subdomainbool = True
 
-    Scanner.start()
+
     # Toggle mx
     if args.mxrecords:
         Scanner.getMX()
@@ -59,9 +69,13 @@ def main():
     if args.Nameserver:
         Scanner.getNS()
 
+
+
     if args.whois:
         Scanner.whoIs()
 
+    if args.whoisJ:
+        Scanner.whoIsJson()
 
 
 
@@ -70,8 +84,8 @@ def main():
        Scanner.getCN()
 
     sys.stdout = savesys
-    #secho("\n[+] Finished ", fg="green")
-    print("\n[+] Finished ")
+    secho("\n[+] Finished ", fg="green")
+
 
     #Scanner.whoIs()
 
