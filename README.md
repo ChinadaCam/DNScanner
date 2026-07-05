@@ -33,12 +33,12 @@ larger OSINT/pentest tool and is built to be used **three ways**:
 
 1. a flag-based **CLI** (`dnscanner` / `python3 start.py`),
 2. an **interactive menu** (run with no arguments), and
-3. an **importable Python module** that returns a structured, JSON-serializable result —
+3. an **importable Python module** that returns a structured, JSON-serializable result
    so a parent tool can embed it without parsing console output.
 
 Importing the package is side-effect free and pulls in DNS/HTTP dependencies lazily, so
 it is cheap and safe to embed. Scans run under one of two **profiles** — `standard`
-(fast, target-only) or `extended` (adds the heavier, third-party-touching checks) — and a
+(fast, target-only) or `extended` (adds the heavier, third-party-touching checks) and a
 persisted config lets you enable/disable individual checks and supply API keys.
 
 ## Features
