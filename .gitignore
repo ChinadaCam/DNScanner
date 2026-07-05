@@ -123,3 +123,63 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# ----------------------------------------------------------------------
+# AI coding assistants (Copilot, Cursor, Claude, etc.) — not part of the tool
+# ----------------------------------------------------------------------
+# GitHub Copilot
+.github/copilot/
+copilot-debug.log
+**/copilot-instructions.local.md
+# Cursor
+.cursor/
+.cursorrules
+.cursorignore
+# Aider
+.aider*
+.aider.tags.cache.v*/
+# Windsurf / Codeium
+.windsurf/
+.codeium/
+# Continue
+.continue/
+# Claude / Anthropic local agent files
+.claude/
+CLAUDE.local.md
+
+# ----------------------------------------------------------------------
+# Editors / IDEs
+# ----------------------------------------------------------------------
+.idea/
+.vscode/
+*.iml
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+
+# ----------------------------------------------------------------------
+# OS-generated files
+# ----------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# ----------------------------------------------------------------------
+# Local file-sync / duplicate artifacts (e.g. "DNScanner (1)")
+# ----------------------------------------------------------------------
+* (1)/
+* (1).*
+* copy/
+* copy.*
+
+# ----------------------------------------------------------------------
+# DNScanner runtime output (scan results & logs should not be committed)
+# ----------------------------------------------------------------------
+DNScanner/Others/Discovers/
+DNScanner/logs/
+*.scan.txt
