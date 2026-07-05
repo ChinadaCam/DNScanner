@@ -183,22 +183,8 @@ export DNSCANNER_GSB_API_KEY=...    # Google Safe Browsing
 When a `config` is passed to `scan()`, checks the user has disabled are filtered out
 before the scan runs.
 
-<!-- ROADMAP -->
-## Roadmap
 
-Delivered in 0.3.x: scan profiles (standard/extended), persisted config with env-first API
-keys, CAA/SOA parsing, remediation + reference on every finding, a rate-limited HTTP helper
-for external APIs, and the `schema_version` `1.1` contract (`scan_profile`, `checks_run`,
-`findings[].remediation`, `findings[].reference`) — on top of the 0.2.x core (importable
-module, email/DNSSEC/AXFR/TLS/HTTP checks, normalized WHOIS/RDAP, IP geolocation,
-active + passive subdomain discovery, takeover detection, HTML/text/PDF reports, tests).
 
-Future ideas (see `IMPLEMENTATION_PLAN.md`, `CODE_REVIEW.md`, and `CHANGES.md`):
-* Domain reputation results (VirusTotal / Google Safe Browsing)
-* More takeover fingerprints, an async engine, and additional passive sources
-
-See the [open issues](https://github.com/ChinadaCam/DNScanner/issues) for proposed
-features and known issues.
 
 <!-- LICENSE -->
 ## License
@@ -213,6 +199,8 @@ Distributed under the GPL-3.0 License. See `LICENSE` for more information.
 Tiago Faustino - tiagfaustino@gmail.com
 
 Project Link: [https://github.com/ChinadaCam/DNScanner](https://github.com/ChinadaCam/DNScanner)
+See the [open issues](https://github.com/ChinadaCam/DNScanner/issues) for proposed
+features and known issues.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [contributors-shield]: https://img.shields.io/github/contributors/ChinadaCam/DNScanner.svg?style=flat-square
