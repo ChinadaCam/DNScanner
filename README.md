@@ -1,5 +1,5 @@
 
- <h1 align="center"> DNScanner 0.3.x </h1>
+ <h1 align="center"> DNScanner </h1>
 <h2 align="center">Domain DNS &amp; security review — CLI, interactive menu, and importable module</h2>
 
 [![Contributors][contributors-shield]][contributors-url]
